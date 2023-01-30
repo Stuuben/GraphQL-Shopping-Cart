@@ -1,0 +1,33 @@
+type Product {
+  id: ID
+  articleNumber: String
+  productName: String
+  price: Float
+  description: String
+}
+
+type Cart {
+  id: ID
+  name: String
+  totalPrice: Float
+  products: [Product]
+}
+
+type DeletedResourceResponse {
+  deletedId: ID
+  success: Boolean
+}
+
+type Query {
+  getProductById(productId: ID!): Product
+  getCartById(cartId: ID!): Cart
+  getAllProducts: [Product]
+}
+
+type Mutation {
+  addProductToCart(cartId: ID!, productId: ID!): Cart
+  removeProductFromCart(cartId: ID!, productId: ID!): Cart
+  createCart(name: String): Cart
+  deleteCart(cartId: ID!): DeletedResourceResponse
+  deleteProduct(productId: ID!): DeletedResourceResponse
+}

@@ -1,9 +1,0 @@
-type Item {
-  id: ID
-  name: String
-  price: String
-}
-
-type Query {
-  getItembyId(itemId: ID): Item
-}

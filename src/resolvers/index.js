@@ -8,9 +8,6 @@ const {
 } = require("../utils");
 const { GraphQLError, graphql } = require("graphql");
 const crypto = require("node:crypto");
-const { truncate } = require("fs");
-const { title } = require("process");
-const { triggerAsyncId } = require("async_hooks");
 
 const productDirectory = path.join(__dirname, "..", "data", "products");
 const cartDirectory = path.join(__dirname, "..", "data", "cart");
@@ -64,10 +61,8 @@ exports.resolvers = {
       const cart = await getDataById(cartId, cartDirectory);
       cart.products.push(productId);
 
-      // Return populated cart
       const populatedCart = await populateCartProducts(cart);
 
-      // Save cart to file
       await saveDataToFile(cart, cartDirectory, false);
 
       return populatedCart;
@@ -79,18 +74,10 @@ exports.resolvers = {
 
       const cart = await getDataById(cartId, cartDirectory);
 
-      // const index = cart.products.indexOf(productId);
-      // if (index !== -1) {
-      //   cart.products = cart.products.splice(index, 1);
-      // }
-
-      // Can be done with filter
       cart.products = cart.products.filter((id) => id !== productId);
 
-      // Save cart to file
       await saveDataToFile(cart, cartDirectory, false);
 
-      // Return populated cart
       const populatedCart = await populateCartProducts(cart);
       return populatedCart;
     },

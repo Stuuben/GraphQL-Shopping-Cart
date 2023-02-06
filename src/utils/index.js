@@ -44,10 +44,8 @@ async function saveDataToFile(data, directory, checkForExisting = true) {
 }
 
 async function populateCart(cart) {
-  // Copy cart to prevent data from being overwritten
   const populatedCart = { ...cart };
 
-  // Populate products
   const promises = [];
   populatedCart.products.forEach((productId) => {
     const productDataPromise = getDataById(productId, productDirectory);
@@ -55,21 +53,13 @@ async function populateCart(cart) {
   });
   populatedCart.products = await Promise.all(promises);
 
-  // Could be done with map
-  // cart.products = await Promise.all(
-  //   cart.products.map((productId) => getDataById(productId, productDirectory))
-  // );
-
-  // Calculate Price
   let totalPrice = 0;
-  for (product of cart.products) {
+
+  for (product of populatedCart.products) {
     totalPrice += product.price ?? 0;
   }
 
   populatedCart.totalPrice = totalPrice;
-
-  // Could also be done with reduce
-  // cart.totalPrice = cart.products.reduce((totalPrice, product) => totalPrice + (product.price ?? 0), 0 );
 
   return populatedCart;
 }
